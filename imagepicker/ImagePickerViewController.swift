@@ -19,39 +19,32 @@ import SwiftyJSON
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     let imagePicker = UIImagePickerController()
     let session = URLSession.shared
+    var labelString = "nothing"
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
-    @IBOutlet weak var labelResults: UITextView!
-    @IBOutlet weak var faceResults: UITextView!
+    //@IBOutlet weak var labelResults: UITextView!
     
     var googleAPIKey = "AIzaSyAf2lxJY7hgOY6sDuIWRTdu8yNQaorGs68"
     var googleURL: URL {
         return URL(string: "https://vision.googleapis.com/v1/images:annotate?key=\(googleAPIKey)")!
     }
     
-    @IBAction func loadImageButtonTapped(_ sender: UIButton) {
-        imagePicker.allowsEditing = false
-        imagePicker.sourceType = .photoLibrary
+    @IBAction func analyzeButtonTapped(_ sender: UIButton) {
         
-        present(imagePicker, animated: true, completion: nil)
-        
-        //FOR AN ALERT
         let alertController = UIAlertController(title: "Google's Vision Results", message:
-            self.faceResults.text, preferredStyle: UIAlertControllerStyle.alert)
+            labelString, preferredStyle: UIAlertControllerStyle.alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
         
+
         self.present(alertController, animated: true, completion: nil)
-        
-    
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         imagePicker.delegate = self
-        labelResults.isHidden = true
-        faceResults.isHidden = true
+        //labelResults.isHidden = true
         spinner.hidesWhenStopped = true
     }
 
@@ -61,21 +54,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func photoFromLibrary(_ sender: UIBarButtonItem) {
-        picViewerController.allowsEditing = false
-        picViewerController.sourceType = .photoLibrary
-        picViewerController.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
-        picViewerController.modalPresentationStyle = .popover
-        present(picViewerController, animated: true, completion: nil)
-        picViewerController.popoverPresentationController?.barButtonItem = sender
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+        imagePicker.modalPresentationStyle = .popover
+        present(imagePicker, animated: true, completion: nil)
+        imagePicker.popoverPresentationController?.barButtonItem = sender
     }
     
     @IBAction func shootPhoto(_ sender: UIBarButtonItem) {
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            picViewerController.allowsEditing = false
-            picViewerController.sourceType = UIImagePickerControllerSourceType.camera
-            picViewerController.cameraCaptureMode = .photo
-            picViewerController.modalPresentationStyle = .fullScreen
-            present(picViewerController,animated: true,completion: nil)
+            imagePicker.allowsEditing = false
+            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            imagePicker.cameraCaptureMode = .photo
+            imagePicker.modalPresentationStyle = .fullScreen
+            present(imagePicker, animated: true,completion: nil)
         } else {
             noCamera()
         }
@@ -114,50 +107,15 @@ extension ViewController {
             let errorObj: JSON = json["error"]
             
             self.spinner.stopAnimating()
-            self.imageView.isHidden = true
-            self.labelResults.isHidden = false
-            self.faceResults.isHidden = false
-            self.faceResults.text = ""
+            self.imageView.isHidden = false
             
             // Check for errors
             if (errorObj.dictionaryValue != [:]) {
-                self.labelResults.text = "Error code \(errorObj["code"]): \(errorObj["message"])"
+                //self.labelResults.text = "Error code \(errorObj["code"]): \(errorObj["message"])"
             } else {
                 // Parse the response
                 print(json)
                 let responses: JSON = json["responses"][0]
-                
-                // Get face annotations
-                let faceAnnotations: JSON = responses["faceAnnotations"]
-                if faceAnnotations != nil {
-                    let emotions: Array<String> = ["joy", "sorrow", "surprise", "anger"]
-                    
-                    let numPeopleDetected:Int = faceAnnotations.count
-                    
-                    self.faceResults.text = "People detected: \(numPeopleDetected)\n\nEmotions detected:\n"
-                    
-                    var emotionTotals: [String: Double] = ["sorrow": 0, "joy": 0, "surprise": 0, "anger": 0]
-                    var emotionLikelihoods: [String: Double] = ["VERY_LIKELY": 0.9, "LIKELY": 0.75, "POSSIBLE": 0.5, "UNLIKELY":0.25, "VERY_UNLIKELY": 0.0]
-                    
-                    for index in 0..<numPeopleDetected {
-                        let personData:JSON = faceAnnotations[index]
-                        
-                        // Sum all the detected emotions
-                        for emotion in emotions {
-                            let lookup = emotion + "Likelihood"
-                            let result:String = personData[lookup].stringValue
-                            emotionTotals[emotion]! += emotionLikelihoods[result]!
-                        }
-                    }
-                    // Get emotion likelihood as a % and display in UI
-                    for (emotion, total) in emotionTotals {
-                        let likelihood:Double = total / Double(numPeopleDetected)
-                        let percent: Int = Int(round(likelihood * 100))
-                        self.faceResults.text! += "\(emotion): \(percent)%\n"
-                    }
-                } else {
-                    self.faceResults.text = "No faces found"
-                }
                 
                 // Get label annotations
                 let labelAnnotations: JSON = responses["labelAnnotations"]
@@ -177,9 +135,9 @@ extension ViewController {
                             labelResultsText += "\(label)"
                         }
                     }
-                    self.labelResults.text = labelResultsText
+                    self.labelString = labelResultsText
                 } else {
-                    self.labelResults.text = "No labels found"
+                    self.labelString = "No labels found"
                 }
             }
         })
@@ -189,10 +147,9 @@ extension ViewController {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             imageView.contentMode = .scaleAspectFit
-            imageView.isHidden = true // You could optionally display the image here by setting imageView.image = pickedImage
+            imageView.image = pickedImage // You could optionally display the image here by setting imageView.image = pickedImage
             spinner.startAnimating()
-            faceResults.isHidden = true
-            labelResults.isHidden = true
+            //labelResults.isHidden = true
             
             // Base64 encode the image and create the request
             let binaryImageData = base64EncodeImage(pickedImage)
@@ -252,10 +209,6 @@ extension ViewController {
                         "type": "LABEL_DETECTION",
                         "maxResults": 10
                     ],
-                    [
-                        "type": "FACE_DETECTION",
-                        "maxResults": 10
-                    ]
                 ]
             ]
         ]

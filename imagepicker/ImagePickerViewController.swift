@@ -35,6 +35,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imagePicker.sourceType = .photoLibrary
         
         present(imagePicker, animated: true, completion: nil)
+        
+        //FOR AN ALERT
+        let alertController = UIAlertController(title: "Google's Vision Results", message:
+            self.faceResults.text, preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
+        
+    
     }
     
     override func viewDidLoad() {

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="gll-Hb-OuI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="gll-Hb-OuI">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,68 +22,58 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="dog_default" translatesAutoresizingMaskIntoConstraints="NO" id="2Ut-bY-SEm">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dog_default" translatesAutoresizingMaskIntoConstraints="NO" id="2Ut-bY-SEm">
                                 <rect key="frame" x="31" y="100" width="312" height="272"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="312" id="Unn-vP-buD"/>
+                                    <constraint firstAttribute="height" constant="272" id="ze1-87-juH"/>
                                 </constraints>
                             </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hPl-Od-BQa">
-                                <rect key="frame" x="0.0" y="64" width="600" height="115"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="STx-9L-19e">
-                                <rect key="frame" x="0.0" y="176" width="375" height="138"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fkD-cI-U98">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fkD-cI-U98">
                                 <rect key="frame" x="91" y="477" width="193" height="30"/>
-                                <state key="normal" title="Choose an image to analyze"/>
+                                <state key="normal" title="Analyze"/>
                                 <connections>
-                                    <action selector="loadImageButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1Kv-Mu-qCR"/>
+                                    <action selector="analyzeButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0Js-BE-wcF"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="1eZ-lw-cEv">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="1eZ-lw-cEv">
                                 <rect key="frame" x="177" y="226" width="20" height="20"/>
                             </activityIndicatorView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SES-Kx-mf2">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SES-Kx-mf2">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Library" id="ol6-y1-nfC"/>
+                                    <barButtonItem title="Library" id="ol6-y1-nfC">
+                                        <connections>
+                                            <action selector="photoFromLibrary:" destination="BYZ-38-t0r" id="Xv2-du-kKe"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="43L-CX-lWC"/>
-                                    <barButtonItem title="Camera" id="W5D-U2-rhf"/>
+                                    <barButtonItem title="Camera" id="W5D-U2-rhf">
+                                        <connections>
+                                            <action selector="shootPhoto:" destination="BYZ-38-t0r" id="1QQ-eQ-bTs"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="hPl-Od-BQa" secondAttribute="trailing" id="14g-IM-Idj"/>
                             <constraint firstItem="fkD-cI-U98" firstAttribute="centerX" secondItem="1eZ-lw-cEv" secondAttribute="centerX" id="29b-yr-5nu"/>
-                            <constraint firstItem="hPl-Od-BQa" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="66Q-ye-WDC"/>
-                            <constraint firstItem="hPl-Od-BQa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="6mh-KQ-MnQ"/>
-                            <constraint firstItem="STx-9L-19e" firstAttribute="trailing" secondItem="hPl-Od-BQa" secondAttribute="trailing" constant="-225" id="D5D-0a-hUN"/>
-                            <constraint firstItem="STx-9L-19e" firstAttribute="centerX" secondItem="1eZ-lw-cEv" secondAttribute="centerX" constant="0.5" id="MbF-sA-yg4"/>
-                            <constraint firstItem="2Ut-bY-SEm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="36" id="ZgT-Ug-i6O"/>
-                            <constraint firstItem="1eZ-lw-cEv" firstAttribute="centerY" secondItem="STx-9L-19e" secondAttribute="centerY" constant="-9" id="e0R-N2-I4k"/>
-                            <constraint firstItem="1eZ-lw-cEv" firstAttribute="top" secondItem="hPl-Od-BQa" secondAttribute="bottom" constant="47" id="huS-xr-lWT"/>
-                            <constraint firstItem="fkD-cI-U98" firstAttribute="top" secondItem="2Ut-bY-SEm" secondAttribute="bottom" constant="105" id="rbY-sR-xaC"/>
-                            <constraint firstItem="STx-9L-19e" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="112" id="tOn-2A-cbl"/>
-                            <constraint firstItem="STx-9L-19e" firstAttribute="leading" secondItem="hPl-Od-BQa" secondAttribute="leading" id="tn0-Gw-Prj"/>
-                            <constraint firstItem="2Ut-bY-SEm" firstAttribute="centerY" secondItem="1eZ-lw-cEv" secondAttribute="centerY" id="u7C-bI-LdU"/>
-                            <constraint firstItem="1eZ-lw-cEv" firstAttribute="centerX" secondItem="2Ut-bY-SEm" secondAttribute="centerX" id="uqX-Uc-enY"/>
+                            <constraint firstItem="2Ut-bY-SEm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="15" id="BXV-Cl-L2D"/>
+                            <constraint firstItem="SES-Kx-mf2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="DGA-il-lur"/>
+                            <constraint firstItem="2Ut-bY-SEm" firstAttribute="centerX" secondItem="1eZ-lw-cEv" secondAttribute="centerX" id="Gta-ZV-NLs"/>
+                            <constraint firstItem="SES-Kx-mf2" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="K66-tV-ONe"/>
+                            <constraint firstItem="2Ut-bY-SEm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="36" id="NWf-ic-OEN"/>
+                            <constraint firstItem="fkD-cI-U98" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="75" id="NZG-eC-Uad"/>
+                            <constraint firstItem="2Ut-bY-SEm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fay-en-9fv"/>
+                            <constraint firstItem="2Ut-bY-SEm" firstAttribute="centerX" secondItem="SES-Kx-mf2" secondAttribute="centerX" id="ftE-xG-xyO"/>
+                            <constraint firstAttribute="bottom" secondItem="fkD-cI-U98" secondAttribute="bottom" constant="160" id="iO4-S6-fcF"/>
+                            <constraint firstItem="2Ut-bY-SEm" firstAttribute="centerY" secondItem="1eZ-lw-cEv" secondAttribute="centerY" id="qVH-Wb-Umm"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="yMD-qr-m2g"/>
                     <connections>
-                        <outlet property="faceResults" destination="STx-9L-19e" id="Yv0-8N-Nj0"/>
                         <outlet property="imageView" destination="2Ut-bY-SEm" id="pff-E4-rB8"/>
-                        <outlet property="labelResults" destination="hPl-Od-BQa" id="ZIt-Vv-ykD"/>
                         <outlet property="spinner" destination="1eZ-lw-cEv" id="8RT-oq-9u5"/>
                     </connections>
                 </viewController>
